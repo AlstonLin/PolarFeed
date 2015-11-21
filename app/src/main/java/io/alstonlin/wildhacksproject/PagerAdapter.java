@@ -5,11 +5,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
 
-    public PagerAdapter(FragmentManager fm, int NumOfTabs) {
+    private static final int NUM_TABS = 2;
+    private AppActivity activity;
+
+
+    public PagerAdapter(FragmentManager fm, AppActivity activity) {
         super(fm);
-        this.mNumOfTabs = NumOfTabs;
+        this.activity = activity;
     }
 
     @Override
@@ -17,10 +20,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                CameraFragment cam = new CameraFragment();
+                CameraFragment cam = CameraFragment.newInstance(activity);
                 return cam;
             case 1:
-                FeedFragment feed = new FeedFragment();
+                FeedFragment feed = FeedFragment.newInstance(activity);
                 return feed;
             default:
                 return null;
@@ -29,6 +32,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return mNumOfTabs;
+        return NUM_TABS;
     }
 }

@@ -22,6 +22,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:id="@+id/code"
+        android:lines="1"
         android:layout_weight="3" />
     <Button
         style="?android:attr/buttonStyleSmall"

@@ -7,7 +7,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-public class AppActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, FeedFragment.OnFragmentInteractionListener{
+import java.io.Serializable;
+
+public class AppActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, FeedFragment.OnFragmentInteractionListener, Serializable {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,7 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
