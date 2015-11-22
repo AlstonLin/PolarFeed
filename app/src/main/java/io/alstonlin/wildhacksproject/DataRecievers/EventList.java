@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import io.alstonlin.wildhacksproject.AddEventsActivity;
 import io.alstonlin.wildhacksproject.AppActivity;
 import io.alstonlin.wildhacksproject.R;
 
@@ -140,7 +141,12 @@ public class EventList {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, AppActivity.class);
+                    Intent intent;
+                    if(evs.get(i).Name=="Add New"){
+                        intent = new Intent(context, AddEventsActivity.class);
+                    }else {
+                        intent = new Intent(context, AppActivity.class);
+                    }
                     intent.putExtra(EXTRA_CODE, evs.get(i).EventID);
                     intent.putExtra(EXTRA_INTERNET, false);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

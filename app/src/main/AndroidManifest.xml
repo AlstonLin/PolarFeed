@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.alstonlin.wildhacksproject">
+    package="io.alstonlin.wildhacksproject" >
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -13,17 +13,18 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_MMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,13 +35,20 @@
             android:name=".AppActivity"
             android:label="@string/title_activity_app"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-        <receiver android:name=".MMSReceiver">
+            android:theme="@style/AppTheme" />
+
+        <receiver android:name=".MMSReceiver" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.WAP_PUSH_RECEIVED" />
+
                 <data android:mimeType="application/vnd.wap.mms-message" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".AddEventsActivity"
+            android:label="@string/title_activity_add_events" >
+        </activity>
     </application>
 
 </manifest>
