@@ -56,9 +56,9 @@ public class EventList {
                     ev.details  = object.getString("details");
                     ev.location  = object.getString("location");
                     events.add(ev);
-                    lv.setAdapter(new EventsListAdapter(events));
                 }
             }
+            lv.setAdapter(new EventsListAdapter(events));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
