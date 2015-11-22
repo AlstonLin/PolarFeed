@@ -6,11 +6,12 @@ import android.graphics.Bitmap;
  * This class will contain the Image and any meta data associated with it.
  */
 public class ImageItem {
-    private Bitmap image;
-    private String url;
-    private int eventId;
-    private int deviceId;
-    private int id;
+    public String imageid;
+    public String url;
+    public Bitmap image;
+    public String eventId;
+    public String userid;
+    public String timestamp;
 
     public ImageItem(Bitmap image, String url, int eventId, int deviceId) {
         super();
@@ -18,8 +19,11 @@ public class ImageItem {
         this.image = image;
     }
 
+    public ImageItem() {
+    }
+
     public int getId(){
-        return id;
+        return Integer.valueOf(imageid);
     }
 
     public String getUrl(){
@@ -31,11 +35,11 @@ public class ImageItem {
     }
 
     public int getEventId(){
-        return eventId;
+        return Integer.valueOf(eventId);
     }
 
     public int getDeviceId(){
-        return deviceId;
+        return Integer.valueOf(userid);
     }
 
 }

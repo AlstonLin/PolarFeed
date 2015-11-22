@@ -2,7 +2,10 @@ package io.alstonlin.wildhacksproject;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +14,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -20,6 +37,8 @@ public class FeedFragment extends Fragment {
 
     private static final String ARG_ACTIVITY = "activity";
 
+    private ArrayList<ImageItem> files;
+    private GridView grid;
     private GridAdapter adapter;
     private OnFragmentInteractionListener mListener;
     private AppActivity activity;
@@ -40,37 +59,89 @@ public class FeedFragment extends Fragment {
     }
 
     private void setupAdapter(View v){
-        GridView grid = (GridView) v.findViewById(R.id.gridView);
-        final ArrayList<ImageItem> list = DAO.getInstance().getImages();
-        adapter = new GridAdapter(activity, R.layout.grid_item, list);
-        grid.setAdapter(adapter);
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                LayoutInflater inflater = activity.getLayoutInflater();
-                View v = inflater.inflate(R.layout.image_dialog, null);
-                final AlertDialog dialog = new AlertDialog.Builder(activity).create();
-                dialog.setView(v);
-                v.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
+        grid= (GridView) v.findViewById(R.id.gridView);
+        GetInfo getInfo = new GetInfo();
+        files = new ArrayList<>();
+        getInfo.execute(getActivity().getIntent().getStringExtra(MainActivity.EXTRA_CODE));
+    }
+
+    private class GetInfo extends AsyncTask<String,Void,Void> {
+        @Override
+        protected Void doInBackground(String... strings) {
+            //get message from message box
+
+            //check whether the msg empty or not
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpGet httppost = new HttpGet("http://polarfeed.mybluemix.net/files/");
+
+            try {
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+                JSONArray a = new JSONArray(EntityUtils.toString(entity, "UTF-8"));
+                for (int i = 0; i < a.length(); i++){
+                    JSONObject b =  a.getJSONObject(i);
+                    ImageItem file =  new ImageItem();
+                    file.eventId = b.getString("EventID");
+                    file.imageid = b.getString("ImageID");
+                    file.url = b.getString("ImageURL");
+                    file.timestamp = b.getString("Timestamp");
+                    file.userid = b.getString("UserID");
+
+                    try {
+                        URL url = new URL("http://polarfeed.mybluemix.net/uploads/"+file.url);
+                        Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        file.image = image;
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                });
-                v.findViewById(R.id.print).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ImageItem item = list.get(position);
-                        try {
-                            String url = DAO.getInstance().printImage(item);
-                            //TODO: Open Web View
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                    files.add(file);
+                }
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            adapter = new GridAdapter(activity, R.layout.grid_item, files);
+            grid.setAdapter(adapter);
+            grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                    LayoutInflater inflater = activity.getLayoutInflater();
+                    View v = inflater.inflate(R.layout.image_dialog, null);
+                    final AlertDialog dialog = new AlertDialog.Builder(activity).create();
+                    dialog.setView(v);
+                    v.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    v.findViewById(R.id.print).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ImageItem item = files.get(position);
+                            try {
+                                String url = DAO.getInstance().printImage(item);
+                                //TODO: Open Web View
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            });
+        }
     }
 
 

@@ -14,7 +14,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
@@ -208,19 +207,19 @@ public class DAO {
         json.put("name", e.getName());
         json.put("location", e.getLocation());
         json.put("description", e.getDetails());
-        HttpResponse response = post.execute(new StringEntity(json.toString()));
-        String s =  (new AsyncTask<HttpResponse, Void, String>() {
-            @Override
-            protected String doInBackground(HttpResponse... params) {
-                try {
-                    return EntityUtils.toString(params[0].getEntity());
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                    return null;
-                }
-            }
-        }).execute(response).get();
-        return s;
+        //HttpResponse response = post.execute(new StringEntity(json.toString()));
+//        String s =  (new AsyncTask<HttpResponse, Void, String>() {
+//            @Override
+//            protected String doInBackground(HttpResponse... params) {
+//                try {
+//                    return EntityUtils.toString(params[0].getEntity());
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                    return null;
+//                }
+//            }
+//        }).execute(response).get();
+        return "'";
     }
 
     private String printImageInternet(ImageItem item) throws Exception {
