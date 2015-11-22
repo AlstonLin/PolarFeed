@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -132,7 +133,13 @@ public class FeedFragment extends Fragment {
                     View v = inflater.inflate(R.layout.image_dialog, null);
                     final AlertDialog dialog = new AlertDialog.Builder(activity).create();
                     dialog.setView(v);
-                    ((ImageView)v.findViewById(R.id.image)).setImageBitmap(item.getImage());
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(item.getImage(), item.getImage().getWidth(), item.getImage().getHeight(), true);
+
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+                    ((ImageView)v.findViewById(R.id.image)).setImageBitmap(rotatedBitmap);
                     v.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

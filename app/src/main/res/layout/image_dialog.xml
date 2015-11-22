@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="250dp">
+    android:layout_height="250dp"
+    android:background="@drawable/white_shape"
+    android:padding="24dp"
+    android:paddingBottom="24dp">
 
     <ImageView
         android:layout_width="match_parent"
@@ -22,13 +25,19 @@
             android:layout_height="wrap_content"
             android:text="Close"
             android:onClick="close"
-            android:id="@+id/close" />
+            android:id="@+id/close"
+            android:background="@drawable/button_primary_normal_color"
+            android:textColor="#fff"
+            android:layout_marginRight="4dp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Print"
-            android:id="@+id/print" />
+            android:id="@+id/print"
+            android:background="@drawable/button_secondary"
+            android:textColor="#fff"
+            android:layout_marginLeft="4dp" />
 
     </LinearLayout>
 
