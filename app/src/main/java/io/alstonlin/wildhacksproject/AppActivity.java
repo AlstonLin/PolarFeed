@@ -33,7 +33,7 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
 
     private void setupDAO(){
         String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-      //  DAO.instantiate(internet, this, Integer.parseInt(code), deviceId);
+        DAO.instantiate(internet, this, Integer.parseInt(code), deviceId);
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)

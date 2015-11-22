@@ -61,6 +61,10 @@ public class CameraFragment extends Fragment {
         return camera;
     }
 
+    public static void resetCamera(){
+        camera = null;
+    }
+
     /**
      * Factory method; use this instead of constructor to instantiate the Fragment.
      * @return A new instance of the Fragment
