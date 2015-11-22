@@ -91,7 +91,7 @@ public class DAO {
      * Queries the server for images. If it already has been called, refreshes the
      * list of items and returns the updated list.
      */
-    public ArrayList<ImageItem> getImages(int eventId){
+    public ArrayList<ImageItem> getImages(){
         if (internet){
             try {
                 return requestImagesInternet(eventId);

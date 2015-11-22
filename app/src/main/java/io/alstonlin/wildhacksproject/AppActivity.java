@@ -16,14 +16,14 @@ import java.io.Serializable;
 public class AppActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, FeedFragment.OnFragmentInteractionListener, Serializable {
 
     private boolean internet;
-    private int code;
+    private String code;
     private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        code = getIntent().getIntExtra(MainActivity.EXTRA_CODE, -1);
-        internet = getIntent().getBooleanExtra(MainActivity.EXTRA_INTERNET, false);
+        code = getIntent().getStringExtra(MainActivity.EXTRA_CODE);
+        internet = getIntent().getBooleanExtra(MainActivity.EXTRA_INTERNET, true);
         setupDAO();
         setContentView(R.layout.activity_app);
         setupTabs();
@@ -32,7 +32,7 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
 
     private void setupDAO(){
         String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        DAO.instantiate(internet, this, code, deviceId);
+        DAO.instantiate(internet, this, Integer.parseInt(code), deviceId);
     }
 
 
