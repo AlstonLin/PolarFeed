@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -126,10 +127,12 @@ public class FeedFragment extends Fragment {
             grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                    final ImageItem item = files.get(position);
                     LayoutInflater inflater = activity.getLayoutInflater();
                     View v = inflater.inflate(R.layout.image_dialog, null);
                     final AlertDialog dialog = new AlertDialog.Builder(activity).create();
                     dialog.setView(v);
+                    ((ImageView)v.findViewById(R.id.image)).setImageBitmap(item.getImage());
                     v.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -139,15 +142,15 @@ public class FeedFragment extends Fragment {
                     v.findViewById(R.id.print).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ImageItem item = files.get(position);
                             try {
                                 String url = DAO.getInstance().printImage(item);
-                                //TODO: Open Web View
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
                     });
+                    dialog.show();
                 }
             });
             view.findViewById(R.id.loader).setVisibility(View.GONE);
