@@ -48,8 +48,8 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
+            android:layout_height="150dp"
+            android:padding="8dp"
             android:layout_marginTop="40dp"
             android:elevation="4dp"
             android:background="#bc072039"
@@ -57,40 +57,12 @@
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp">
 
-            <EditText
+            <ListView
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:id="@+id/code"
-                android:lines="1"
-                android:textColorHint="#fff"
-                android:hint="Event  Code"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:clickable="true"
-                android:editable="true"
-                android:textColor="#fff" />
-
-            <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Use Internet   "
-            android:id="@+id/internet"
-            android:layout_gravity="center_horizontal"
-                android:checked="false"
-                android:clickable="true"
-                android:textColor="#fff"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp" />
-
-            <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Join"
-            android:id="@+id/join"
-                android:minWidth="100dp" />
+                android:layout_height="fill_parent"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:id="@+id/listView" />
         </LinearLayout>
 
 
