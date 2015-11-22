@@ -43,6 +43,7 @@ public class FeedFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private AppActivity activity;
 
+    private View view;
 
     /**
      * Use this Factory method to create the Fragment instead of the constructor.
@@ -60,6 +61,14 @@ public class FeedFragment extends Fragment {
 
     private void setupAdapter(View v){
         grid= (GridView) v.findViewById(R.id.gridView);
+        GetInfo getInfo = new GetInfo();
+        files = new ArrayList<>();
+        getInfo.execute(getActivity().getIntent().getStringExtra(MainActivity.EXTRA_CODE));
+        this.view = v;
+    }
+
+    public void resetAdapter(){
+
         GetInfo getInfo = new GetInfo();
         files = new ArrayList<>();
         getInfo.execute(getActivity().getIntent().getStringExtra(MainActivity.EXTRA_CODE));
@@ -141,6 +150,7 @@ public class FeedFragment extends Fragment {
                     });
                 }
             });
+            view.findViewById(R.id.loader).setVisibility(View.GONE);
         }
     }
 

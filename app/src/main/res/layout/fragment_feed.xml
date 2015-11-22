@@ -3,18 +3,53 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     tools:context="io.alstonlin.wildhacksproject.FeedFragment"
+    android:id="@+id/feed"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="12dp"
+        android:id="@+id/loader"
+        android:background="#d75b61"
+        android:visibility="gone"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView7"
+            android:src="@drawable/groupon"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Images for Event"
-        android:id="@+id/textView6"
-        android:paddingLeft="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:background="#e3e7e0" />
+        android:background="#e3e7e0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Images for Event"
+            android:id="@+id/textView6"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:autoText="false" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView8"
+            android:src="@drawable/ic_refresh_pink_600_36dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="24dp"
+            android:onClick="refresh" />
+    </RelativeLayout>
 
     <GridView
         android:id="@+id/gridView"

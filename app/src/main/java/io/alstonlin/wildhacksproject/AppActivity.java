@@ -7,8 +7,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -81,5 +85,13 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    public void refresh(View view) {
+        List<android.support.v4.app.Fragment> allFragments = getSupportFragmentManager().getFragments();
+        ((FeedFragment) allFragments.get(1)).resetAdapter();
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        findViewById(R.id.loader).setVisibility(View.VISIBLE);
+        findViewById(R.id.imageView7).startAnimation(shake);
     }
 }

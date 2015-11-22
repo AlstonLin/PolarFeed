@@ -39,7 +39,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Toast.makeText(context, "Error creating Camera Preview", Toast.LENGTH_LONG).show();
         }
     }
-    
+
 
     public void surfaceDestroyed(SurfaceHolder holder) {
 

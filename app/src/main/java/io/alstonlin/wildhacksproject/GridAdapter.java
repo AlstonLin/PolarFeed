@@ -2,6 +2,8 @@ package io.alstonlin.wildhacksproject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +43,14 @@ public class GridAdapter extends ArrayAdapter{
         }
 
         ImageItem item = data.get(position);
-        holder.image.setImageBitmap(item.getImage());
+        Matrix matrix = new Matrix();
+
+        matrix.postRotate(90);
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(item.getImage(),item.getImage().getWidth(),item.getImage().getHeight(),true);
+
+        Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+        holder.image.setImageBitmap(rotatedBitmap);
         return row;
     }
 
