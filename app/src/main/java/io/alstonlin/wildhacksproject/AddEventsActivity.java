@@ -24,9 +24,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 public class AddEventsActivity extends AppCompatActivity {
 
@@ -68,69 +70,42 @@ public class AddEventsActivity extends AppCompatActivity {
                 ((EditText)findViewById(R.id.location)).getText().toString(),
                 ((EditText)findViewById(R.id.description)).getText().toString()
         };
-        if(information[0]!=information[1]&&information[1]!=information[2]) {
-            GetInfo getInfo = new GetInfo();
-            getInfo.execute(information);
-        }else{
+        if (!information[0].equals(information[1]) && !information[1].equals(information[2])) {
+            Event event = new Event("", information[0], information[1], information[2]);
+            try {
+                try {
+                    String code = DAO.getInstance().postEvent(event);
+                    Intent intent = new Intent(this, AppActivity.class);
+                    intent.putExtra(MainActivity.EXTRA_CODE, code);
+                    intent.putExtra(MainActivity.EXTRA_INTERNET, true);
+                    startActivity(intent);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else{
             Toast.makeText(this,"Please input valid informaiton",Toast.LENGTH_SHORT).show();
         }
     }
 
     private void nextTask(String s){
         Intent intent = new Intent(AddEventsActivity.this, AppActivity.class);
-        if(s==null){
+        if(s == null){
             Random r = new Random();
             intent.putExtra(EXTRA_CODE, (r.nextInt(100)+1000));
-        }else{
+        } else{
             intent.putExtra(EXTRA_CODE, Integer.parseInt(s));
         }
         intent.putExtra(EXTRA_INTERNET, false);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-    }
-
-    private class GetInfo extends AsyncTask<String,Void,String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            findViewById(R.id.loader).setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            //get message from message box
-
-            //check whether the msg empty or not
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://polarfeed.mybluemix.net/addevent");
-
-            try {
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-                nameValuePairs.add(new BasicNameValuePair("name", strings[0]));
-                nameValuePairs.add(new BasicNameValuePair("location", strings[1]));
-                nameValuePairs.add(new BasicNameValuePair("description", strings[2]));
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity entity = response.getEntity();
-                JSONObject a = new JSONObject(EntityUtils.toString(entity, "UTF-8"));
-                return a.getString("insertId");
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String value) {
-            super.onPostExecute(value);
-            nextTask(value);
-        }
     }
 }

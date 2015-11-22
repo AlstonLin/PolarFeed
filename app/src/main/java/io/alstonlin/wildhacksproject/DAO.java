@@ -29,10 +29,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
@@ -151,6 +149,10 @@ public class DAO {
         }
     }
 
+    public String postEvent(Event e) throws IOException, JSONException, InterruptedException, ExecutionException {
+        return postEventInternet(e);
+    }
+
     /*
        ------------------- INTERNET METHODS -------------------------------------
      */
@@ -200,13 +202,25 @@ public class DAO {
         return images;
     }
 
-    private void postEvent(Event e) throws JSONException, UnsupportedEncodingException {
+    private String postEventInternet(Event e) throws JSONException, IOException, ExecutionException, InterruptedException {
         HTTPPost post = new HTTPPost(POST_EVENT_PATH);
         JSONObject json = new JSONObject();
         json.put("name", e.getName());
         json.put("location", e.getLocation());
         json.put("description", e.getDetails());
-        post.execute(new StringEntity(json.toString()));
+        HttpResponse response = post.execute(new StringEntity(json.toString()));
+        String s =  (new AsyncTask<HttpResponse, Void, String>() {
+            @Override
+            protected String doInBackground(HttpResponse... params) {
+                try {
+                    return EntityUtils.toString(params[0].getEntity());
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                    return null;
+                }
+            }
+        }).execute(response).get();
+        return s;
     }
 
     private String printImageInternet(ImageItem item) throws Exception {
@@ -283,7 +297,7 @@ public class DAO {
     }
 
 
-    private class HTTPPost extends AsyncTask<HttpEntity, Void, Void> {
+    private class HTTPPost extends AsyncTask<HttpEntity, Void, HttpResponse > {
         private String path;
 
         public HTTPPost(String path){
@@ -291,13 +305,13 @@ public class DAO {
         }
 
         @Override
-        protected Void doInBackground(HttpEntity... entity) {
+        protected HttpResponse doInBackground(HttpEntity... entity) {
             HttpClient myClient = new DefaultHttpClient();
             HttpPost post = new HttpPost(SITE_URL + path);
             try {
                 post.setEntity(entity[0]);
-                myClient.execute(post);
-            } catch (IOException e) {
+                return myClient.execute(post);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
