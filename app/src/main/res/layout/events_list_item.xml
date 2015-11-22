@@ -4,23 +4,39 @@
     android:layout_height="match_parent"
     android:id="@+id/events_list">
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:layout_marginBottom="4dp"
+        android:background="#fff"
+        android:elevation="2dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:id="@+id/imageView3"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/groupon" />
+
+        <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="18dp"
-        android:nestedScrollingEnabled="true"
-        android:layout_marginBottom="4dp"
-        android:background="#fff">
+        android:layout_height="wrap_content">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Event Name"
             android:id="@+id/name"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:textSize="18sp"
-            android:textColor="#000" />
+            android:textColor="@color/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,5 +46,5 @@
             android:textColor="#000" />
 
     </LinearLayout>
-
+    </RelativeLayout>
 </LinearLayout>

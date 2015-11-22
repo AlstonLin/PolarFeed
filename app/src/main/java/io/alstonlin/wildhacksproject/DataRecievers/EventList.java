@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -133,6 +134,9 @@ public class EventList {
             }
             ((TextView)view.findViewById(R.id.name)).setText(evs.get(i).Name);
             ((TextView)view.findViewById(R.id.location)).setText(evs.get(i).location);
+            if(evs.get(i).Name=="Add New"){
+                ((ImageView)view.findViewById(R.id.imageView3)).setImageDrawable(context.getDrawable(R.drawable.ic_my_library_add_indigo_a200_24dp));
+            }
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
