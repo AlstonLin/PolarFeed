@@ -5,8 +5,20 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -15,6 +27,7 @@ import java.util.Random;
  */
 public class DAO {
     private static String URL = "ENTER URL HERE";
+    private static String WALGREENS_URL = "https://services-qa.walgreens.com/api/util/mweb5url";
     private static String WALGREENS_KEY = "uEgdGWwKeWc6WPekIyotrgntvTHhYtaz";
     private static String NUMBER = "8473837143";
     private static String SEND_IMAGE_KEY = "SEND";
@@ -87,13 +100,22 @@ public class DAO {
         callback.exec(images);
     }
 
+    /**
+     * Requests a image to be printed
+     * @param item
+     */
+    private void printImage(ImageItem item){
+
+    }
+
 
     private void setupInternet(){
         //DAVID DO YOUR STUFF HERE
     }
 
     private void sendItemInternet(ImageItem item) {
-        //DAVID DO YOUR STUFF HERE
+        Map<String, String> map = new HashMap();
+
     }
 
 
@@ -123,4 +145,40 @@ public class DAO {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
+
+    public static HttpResponse makeRequest(String path, Map params) throws Exception {
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        HttpPost httpost = new HttpPost(path);
+        JSONObject holder = getJsonObjectFromMap(params);
+        StringEntity se = new StringEntity(holder.toString());
+
+        httpost.setEntity(se);
+        httpost.setHeader("Accept", "application/json");
+        httpost.setHeader("Content-type", "application/json");
+        ResponseHandler responseHandler = new BasicResponseHandler();
+
+        return (HttpResponse) httpclient.execute(httpost, responseHandler);
+    }
+
+
+    private static JSONObject getJsonObjectFromMap(Map params) throws JSONException {
+        Iterator iter = params.entrySet().iterator();
+        JSONObject holder = new JSONObject();
+
+        while (iter.hasNext()) {
+            Map.Entry pairs = (Map.Entry) iter.next();
+            String key = (String) pairs.getKey();
+            Map m = (Map) pairs.getValue();
+            JSONObject data = new JSONObject();
+            Iterator iter2 = m.entrySet().iterator();
+            while (iter2.hasNext()) {
+                Map.Entry pairs2 = (Map.Entry) iter2.next();
+                data.put((String) pairs2.getKey(), (String) pairs2.getValue());
+            }
+            holder.put(key, data);
+        }
+        return holder;
+    }
 }
+
+
