@@ -61,18 +61,19 @@ public class EventList {
 
         @Override
         public View getView(final int i, View view, ViewGroup viewGroup) {
-            if (view == null) {
+            if(view==null) {
                 LayoutInflater vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = vi.inflate(R.layout.events_list_item, viewGroup, false);
             }
             ((TextView)view.findViewById(R.id.name)).setText(evs.get(i).name);
             ((TextView)view.findViewById(R.id.location)).setText(evs.get(i).location);
-            if (evs.get(i).getName().equals("Add New")){
+            if(evs.get(i).getName().equals("Add New")){
                 ((ImageView)view.findViewById(R.id.imageView3)).setImageDrawable(context.getDrawable(R.drawable.ic_my_library_add_indigo_a200_24dp));
             }
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+<<<<<<< HEAD
                     Intent intent;
                     if(evs.get(i).getName().equals("Add New")){
                         intent = new Intent(context, AddEventsActivity.class);
@@ -81,6 +82,12 @@ public class EventList {
                     }
                     intent.putExtra(EXTRA_CODE, evs.get(i).eventID);
                     intent.putExtra(EXTRA_INTERNET, false);
+=======
+                    Intent intent = new Intent(context, AppActivity.class);
+                    intent.putExtra(MainActivity.EXTRA_CODE, evs.get(i).getEventID());
+                    intent.putExtra(MainActivity.EXTRA_INTERNET, true);
+
+>>>>>>> parent of 0bff070... Fixed the errors in the last merge
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     context.startActivity(intent);
