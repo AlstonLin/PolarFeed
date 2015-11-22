@@ -1,7 +1,13 @@
 package io.alstonlin.wildhacksproject;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.telephony.SmsManager;
+
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -9,8 +15,13 @@ import java.util.ArrayList;
  */
 public class DAO {
     private static String URL = "ENTER URL HERE";
+    private static String WALGREENS_KEY = "uEgdGWwKeWc6WPekIyotrgntvTHhYtaz";
+    private static String NUMBER = "8473837143";
+    private static String SEND_IMAGE_KEY = "SEND";
+    private static String REQUEST_KEY = "REQUEST";
     private static DAO instance;
 
+    private SmsManager manager;
     private HttpURLConnection conn;
     private boolean internet;
     private AppActivity activity;
@@ -48,22 +59,30 @@ public class DAO {
     /**
      * Queries the server for images. If it already has been called, refreshes the
      * list of items and returns the updated list.
-     * @return The updated list of items
      */
-    public ArrayList<ImageItem> getImages(){
+    public void getImages(){
         if (internet){
-            return getImagesInternet();
+            requestImagesInternet();
         } else{
-            return getImagesTwilio();
+            requestImagesTwilio();
         }
     }
 
-    public void sendItem (ImageItem item){
+    public void sendItem(ImageItem item){
         if (internet){
             sendItemInternet(item);
         }else{
             sendItemTwilio(item);
         }
+    }
+
+    /**
+     * This should be called when the server sends back the images after the query.
+     *
+     * @param images The images sent
+     */
+    private void receiveImages(ArrayList<ImageItem> images){
+
     }
 
 
@@ -76,22 +95,30 @@ public class DAO {
     }
 
 
-    public ArrayList<ImageItem> getImagesInternet() {
+    public void requestImagesInternet() {
         //DAVID DO YOUR STUFF HERE
-        return null;
     }
 
 
     private void setupTwilio(){
-
+        manager = SmsManager.getDefault();
     }
 
-    public ArrayList<ImageItem> getImagesTwilio() {
-        return null;
+    public void requestImagesTwilio() {
+        manager.sendTextMessage(NUMBER, null, REQUEST_KEY, null, null);
     }
 
 
     private void sendItemTwilio(ImageItem item) {
-
+        Random rand = new Random();
+        String path = MediaStore.Images.Media.insertImage(activity.getContentResolver(), item.getImage(), "Image" + rand.nextInt(99999), null);
+        Uri uri = Uri.parse(path);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra("address", NUMBER);
+        intent.putExtra("sms_body", SEND_IMAGE_KEY + " " + item.getEventId() + " " + item.getDeviceId());
+        intent.putExtra(Intent.EXTRA_STREAM, "file:/" + uri);
+        intent.setType("image/png");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
     }
 }
