@@ -158,6 +158,7 @@ public class FeedFragment extends Fragment {
                                 alert.setTitle("Print Image at WalGreens");
                                 WebView wv = new WebView(activity);
                                 wv.loadUrl(url);
+                                wv.getSettings().setJavaScriptEnabled(true);
                                 wv.setWebViewClient(new WebViewClient() {
                                     @Override
                                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
