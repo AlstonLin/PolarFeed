@@ -1,10 +1,9 @@
 package io.alstonlin.wildhacksproject;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ListView;
-
-import io.alstonlin.wildhacksproject.DataRecievers.EventList;
 
 /**
  * Entry point of the app. This is the login page.
@@ -17,6 +16,8 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        DAO.instantiate(true, this, 0, deviceId);
         //Button joinButton = (Button) findViewById(R.id.join);
         EventList eventList  = new EventList(this,(ListView)findViewById(R.id.listView));
 //        //joinButton.setOnClickListener(new View.OnClickListener() {

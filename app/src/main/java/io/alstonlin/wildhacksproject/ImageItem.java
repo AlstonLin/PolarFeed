@@ -18,6 +18,9 @@ public class ImageItem {
         this.image = image;
     }
 
+    public int getId(){
+        return id;
+    }
 
     public String getUrl(){
         return url;

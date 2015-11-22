@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
 
 /**
  * The Activity that contains the entire app after login.
@@ -16,15 +16,14 @@ import java.util.ArrayList;
 public class AppActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, FeedFragment.OnFragmentInteractionListener, Serializable {
 
     private boolean internet;
-    private int code;
+    private String code;
     private TabLayout tabLayout;
-    private Command callback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        code = getIntent().getIntExtra(MainActivity.EXTRA_CODE, -1);
-        internet = getIntent().getBooleanExtra(MainActivity.EXTRA_INTERNET, false);
+        code = getIntent().getStringExtra(MainActivity.EXTRA_CODE);
+        internet = getIntent().getBooleanExtra(MainActivity.EXTRA_INTERNET, true);
         setupDAO();
         setContentView(R.layout.activity_app);
         setupTabs();
@@ -33,12 +32,7 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
 
     private void setupDAO(){
         String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        DAO.instantiate(internet, this, code, deviceId, new Command() {
-            @Override
-            public void exec(ArrayList<ImageItem> items) {
-                callback.exec(items);
-            }
-        });
+        DAO.instantiate(internet, this, Integer.parseInt(code), deviceId);
     }
 
 
@@ -68,10 +62,6 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-    }
-
-    public void setCallback(Command callback){
-        this.callback = callback;
     }
 
     @Override

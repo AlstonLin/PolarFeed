@@ -1,5 +1,6 @@
 package io.alstonlin.wildhacksproject;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -22,9 +24,6 @@ public class FeedFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private AppActivity activity;
 
-    private FeedFragment() { //Just in case someone tries to create a new instance with the constructor
-    }
-
 
     /**
      * Use this Factory method to create the Fragment instead of the constructor.
@@ -37,21 +36,41 @@ public class FeedFragment extends Fragment {
         args.putSerializable(ARG_ACTIVITY, activity);
         fragment.setArguments(args);
         fragment.activity = activity;
-        activity.setCallback(new Command() {
-            @Override
-            public void exec(ArrayList<ImageItem> items) {
-                fragment.adapter.addAll(items);
-                fragment.adapter.notifyDataSetChanged();
-            }
-        });
         return fragment;
     }
 
     private void setupAdapter(View v){
-        DAO.getInstance().getImages();
         GridView grid = (GridView) v.findViewById(R.id.gridView);
-        adapter = new GridAdapter(activity, R.layout.grid_item, new ArrayList<ImageItem>());
+        final ArrayList<ImageItem> list = DAO.getInstance().getImages();
+        adapter = new GridAdapter(activity, R.layout.grid_item, list);
         grid.setAdapter(adapter);
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                LayoutInflater inflater = activity.getLayoutInflater();
+                View v = inflater.inflate(R.layout.image_dialog, null);
+                final AlertDialog dialog = new AlertDialog.Builder(activity).create();
+                dialog.setView(v);
+                v.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                v.findViewById(R.id.print).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ImageItem item = list.get(position);
+                        try {
+                            String url = DAO.getInstance().printImage(item);
+                            //TODO: Open Web View
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
     }
 
 
