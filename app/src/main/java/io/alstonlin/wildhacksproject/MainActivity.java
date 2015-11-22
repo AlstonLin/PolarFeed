@@ -33,7 +33,8 @@ public class MainActivity extends FragmentActivity {
                     Intent intent = new Intent(MainActivity.this, AppActivity.class);
                     intent.putExtra(EXTRA_CODE, code);
                     intent.putExtra(EXTRA_INTERNET, internet);
-
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }catch(Exception e){
                     Toast.makeText(MainActivity.this, "Invalid Code", Toast.LENGTH_LONG).show();

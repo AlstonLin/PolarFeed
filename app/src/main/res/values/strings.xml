@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WildHacksProject</string>
+    <string name="app_name">PolarFeed</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_app">AppActivity</string>
+    <string name="title_activity_app">PolarFeed</string>
 </resources>

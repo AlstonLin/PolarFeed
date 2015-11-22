@@ -1,63 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
 
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    tools:context=".MainActivity"
+    android:background="#54d29f">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg" />
+
+    <LinearLayout
+    android:orientation="vertical"
+    android:paddingLeft="40dp"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:paddingRight="40dp"
+        android:gravity="center_vertical">
+
+
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/logo" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:text="PUT APP NAME HERE"
+        android:layout_height="wrap_content"
+        android:text="PolarFeed"
         android:layout_gravity="center_horizontal"
         android:gravity="bottom"
-        android:paddingTop="100dp"
-        android:textSize="32sp" />
+        android:textSize="32sp"
+        android:paddingTop="18dp"
+        android:textColor="#fff"
+        android:typeface="normal"
+        android:fontFamily="sans-serif-light" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Event Code"
-            android:textSize="24sp"
-            android:id="@+id/textView"
-            android:layout_weight="1" />
+            android:padding="24dp"
+            android:layout_marginTop="40dp"
+            android:elevation="4dp"
+            android:background="#bc072039"
+            android:focusable="true"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp">
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:ems="9"
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/code"
+                android:lines="1"
+                android:textColorHint="#fff"
+                android:hint="Event  Code"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:clickable="true"
+                android:editable="true"
+                android:textColor="#fff" />
+
+            <Switch
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:id="@+id/code"
-            android:lines="1" />
+            android:text="Use Internet   "
+            android:id="@+id/internet"
+            android:layout_gravity="center_horizontal"
+                android:checked="false"
+                android:clickable="true"
+                android:textColor="#fff"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Join"
+            android:id="@+id/join"
+                android:minWidth="100dp" />
+        </LinearLayout>
+
 
     </LinearLayout>
 
-
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Use Internet"
-        android:id="@+id/internet"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Join"
-        android:id="@+id/join" />
-
-</LinearLayout>
+</RelativeLayout>

@@ -6,7 +6,6 @@ import android.provider.Settings;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
         code = getIntent().getIntExtra(MainActivity.EXTRA_CODE, -1);
         internet = getIntent().getBooleanExtra(MainActivity.EXTRA_INTERNET, false);
         setupDAO();
-        setupView();
+        setContentView(R.layout.activity_app);
         setupTabs();
         setupViewPager();
     }
@@ -42,11 +41,6 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
         });
     }
 
-    private void setupView(){
-        setContentView(R.layout.activity_app);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }
 
     private void setupTabs(){
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);

@@ -4,14 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 
 import java.util.logging.Level;
@@ -65,18 +64,6 @@ public class CameraFragment extends Fragment {
         return fragment;
     }
 
-    public void setupButtons(){
-        Button captureButton = (Button) activity.findViewById(R.id.capture);
-        captureButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        camera.takePicture(null, null, picture);
-                    }
-                }
-        );
-    }
-
     /*
      * BELOW ARE THE AUTO-GENERATED ANDROID FRAGMENT METHODS.
      */
@@ -95,7 +82,16 @@ public class CameraFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_camera, container, false);
         FrameLayout previewFrame = (FrameLayout) v.findViewById(R.id.camera_preview);
-        previewFrame.addView(preview);
+        previewFrame.addView(preview, 0);
+
+        FloatingActionButton captureButton = (FloatingActionButton) v.findViewById(R.id.capture);
+        captureButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        camera.takePicture(null, null, picture);
+                    }
+                });
         return v;
     }
 

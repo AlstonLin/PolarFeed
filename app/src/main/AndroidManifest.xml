@@ -34,7 +34,7 @@
             android:name=".AppActivity"
             android:label="@string/title_activity_app"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme"/>
         <receiver android:name=".MMSReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.WAP_PUSH_RECEIVED" />
