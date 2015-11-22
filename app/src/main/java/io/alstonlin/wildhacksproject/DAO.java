@@ -57,7 +57,7 @@ public class DAO {
 
     private SmsManager manager;
     private HttpURLConnection conn;
-    private boolean internet;
+    private boolean internet = true;
     private Activity activity;
     private ArrayList<ImageItem> items = new ArrayList<>();
     private int eventId;
@@ -294,8 +294,8 @@ public class DAO {
     }
 
     private String printImageInternet(ImageItem item) throws Exception {
-        HTTPGet get = new HTTPGet(GET_PRINT_PATH + "/" + item.getId());
-        String url = get.execute().get().getString(0);
+        HTTPGetString get = new HTTPGetString(GET_PRINT_PATH + "/" + item.getId());
+        String url = get.execute().get();
         return url;
     }
 
@@ -366,6 +366,29 @@ public class DAO {
         }
     }
 
+
+    private class HTTPGetString extends AsyncTask<Void,Void,String> {
+        private String path;
+
+        public HTTPGetString(String path){
+            this.path = path;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            HttpResponse response;
+            HttpClient myClient = new DefaultHttpClient();
+            HttpGet myConnection = new HttpGet(SITE_URL + path);
+            try {
+                response = myClient.execute(myConnection);
+                String str = EntityUtils.toString(response.getEntity(), "UTF-8");
+                return str;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 
     private class HTTPPost extends AsyncTask<HttpEntity, Void, HttpResponse > {
         private String path;

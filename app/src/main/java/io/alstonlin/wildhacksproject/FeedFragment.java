@@ -2,6 +2,7 @@ package io.alstonlin.wildhacksproject;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -144,7 +147,27 @@ public class FeedFragment extends Fragment {
                         public void onClick(View v) {
                             try {
                                 String url = DAO.getInstance().printImage(item);
+                                AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+                                alert.setTitle("Print Image at WalGreens");
+                                WebView wv = new WebView(activity);
+                                wv.loadUrl(url);
+                                wv.setWebViewClient(new WebViewClient() {
+                                    @Override
+                                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                                        view.loadUrl(url);
 
+                                        return true;
+                                    }
+                                });
+
+                                alert.setView(wv);
+                                alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                alert.show();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
