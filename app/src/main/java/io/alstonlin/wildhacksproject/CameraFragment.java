@@ -1,6 +1,8 @@
 package io.alstonlin.wildhacksproject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 
 import android.net.Uri;
@@ -29,7 +31,7 @@ public class CameraFragment extends Fragment {
     private Camera.PictureCallback picture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-
+            Bitmap image = BitmapFactory.decodeByteArray(data, 0, data.length);
         }
     };
 

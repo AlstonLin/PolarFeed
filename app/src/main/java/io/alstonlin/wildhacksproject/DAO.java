@@ -1,18 +1,5 @@
 package io.alstonlin.wildhacksproject;
 
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
