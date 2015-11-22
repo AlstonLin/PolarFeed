@@ -74,6 +74,7 @@ public class EventList {
                 @Override
                 public void onClick(View view) {
 <<<<<<< HEAD
+<<<<<<< HEAD
                     Intent intent;
                     if(evs.get(i).getName().equals("Add New")){
                         intent = new Intent(context, AddEventsActivity.class);
@@ -83,10 +84,15 @@ public class EventList {
                     intent.putExtra(EXTRA_CODE, evs.get(i).eventID);
                     intent.putExtra(EXTRA_INTERNET, false);
 =======
+=======
+>>>>>>> parent of 0bff070... Fixed the errors in the last merge
                     Intent intent = new Intent(context, AppActivity.class);
                     intent.putExtra(MainActivity.EXTRA_CODE, evs.get(i).getEventID());
                     intent.putExtra(MainActivity.EXTRA_INTERNET, true);
 
+<<<<<<< HEAD
+>>>>>>> parent of 0bff070... Fixed the errors in the last merge
+=======
 >>>>>>> parent of 0bff070... Fixed the errors in the last merge
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
