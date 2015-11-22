@@ -21,6 +21,7 @@ public class DAO {
     private static String REQUEST_KEY = "REQUEST";
     private static DAO instance;
 
+    private Command callback;
     private SmsManager manager;
     private HttpURLConnection conn;
     private boolean internet;
@@ -31,12 +32,13 @@ public class DAO {
 
     private DAO(){}
 
-    public static void instantiate(boolean internet, AppActivity activity, int eventId, String deviceId){
+    public static void instantiate(boolean internet, AppActivity activity, int eventId, String deviceId, Command callback){
         instance = new DAO();
         instance.internet = internet;
         instance.activity = activity;
         instance.eventId = eventId;
         instance.deviceId = deviceId;
+        instance.callback = callback;
         if (internet){
             instance.setupInternet();
         }else{
@@ -82,7 +84,7 @@ public class DAO {
      * @param images The images sent
      */
     private void receiveImages(ArrayList<ImageItem> images){
-
+        callback.exec(images);
     }
 
 

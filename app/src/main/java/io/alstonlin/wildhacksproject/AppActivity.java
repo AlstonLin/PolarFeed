@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * The Activity that contains the entire app after login.
@@ -18,6 +19,7 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
     private boolean internet;
     private int code;
     private TabLayout tabLayout;
+    private Command callback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,12 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
 
     private void setupDAO(){
         String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        DAO.instantiate(internet, this, code, deviceId);
+        DAO.instantiate(internet, this, code, deviceId, new Command() {
+            @Override
+            public void exec(ArrayList<ImageItem> items) {
+                callback.exec(items);
+            }
+        });
     }
 
     private void setupView(){
@@ -67,6 +74,10 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
+
+    public void setCallback(Command callback){
+        this.callback = callback;
     }
 
     @Override

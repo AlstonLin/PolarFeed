@@ -7,13 +7,20 @@ import android.graphics.Bitmap;
  */
 public class ImageItem {
     private Bitmap image;
+    private String url;
     private int eventId;
     private int deviceId;
     private int id;
 
-    public ImageItem(Bitmap image, int eventId, int deviceId) {
+    public ImageItem(Bitmap image, String url, int eventId, int deviceId) {
         super();
+        this.url = url;
         this.image = image;
+    }
+
+
+    public String getUrl(){
+        return url;
     }
 
     public Bitmap getImage() {

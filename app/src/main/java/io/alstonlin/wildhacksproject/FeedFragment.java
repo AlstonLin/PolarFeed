@@ -32,20 +32,28 @@ public class FeedFragment extends Fragment {
      * @return The new Fragment instance
      */
     public static FeedFragment newInstance(AppActivity activity) {
-        FeedFragment fragment = new FeedFragment();
+        final FeedFragment fragment = new FeedFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_ACTIVITY, activity);
         fragment.setArguments(args);
         fragment.activity = activity;
+        activity.setCallback(new Command() {
+            @Override
+            public void exec(ArrayList<ImageItem> items) {
+                fragment.adapter.addAll(items);
+                fragment.adapter.notifyDataSetChanged();
+            }
+        });
         return fragment;
     }
 
     private void setupAdapter(View v){
-        ArrayList<ImageItem> items = DAO.getInstance().getImages();
+        DAO.getInstance().getImages();
         GridView grid = (GridView) v.findViewById(R.id.gridView);
-        adapter = new GridAdapter(activity, R.layout.grid_item, items);
+        adapter = new GridAdapter(activity, R.layout.grid_item, new ArrayList<ImageItem>());
         grid.setAdapter(adapter);
     }
+
 
     /*
      * EVERYTHING BELOW ARE THE AUTO-GENERATED ANDROID FRAGMENT METHODS
