@@ -7,19 +7,30 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
+import java.util.ArrayList;
 
+/**
+ * The Fragment for the image feed in AppActivity
+ */
 public class FeedFragment extends Fragment {
 
     private static final String ARG_ACTIVITY = "activity";
 
+    private GridAdapter adapter;
     private OnFragmentInteractionListener mListener;
     private AppActivity activity;
 
-    private FeedFragment() {
+    private FeedFragment() { //Just in case someone tries to create a new instance with the constructor
     }
 
 
+    /**
+     * Use this Factory method to create the Fragment instead of the constructor.
+     * @param activity The Activity this Fragment will be attached to
+     * @return The new Fragment instance
+     */
     public static FeedFragment newInstance(AppActivity activity) {
         FeedFragment fragment = new FeedFragment();
         Bundle args = new Bundle();
@@ -28,6 +39,17 @@ public class FeedFragment extends Fragment {
         fragment.activity = activity;
         return fragment;
     }
+
+    private void setupAdapter(View v){
+        ArrayList<ImageItem> items = DAO.getInstance().getImages();
+        GridView grid = (GridView) v.findViewById(R.id.gridView);
+        adapter = new GridAdapter(activity, R.layout.grid_item, items);
+        grid.setAdapter(adapter);
+    }
+
+    /*
+     * EVERYTHING BELOW ARE THE AUTO-GENERATED ANDROID FRAGMENT METHODS
+     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,17 +60,10 @@ public class FeedFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_feed, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_feed, container, false);
+        setupAdapter(v);
+        return v;
     }
 
     @Override

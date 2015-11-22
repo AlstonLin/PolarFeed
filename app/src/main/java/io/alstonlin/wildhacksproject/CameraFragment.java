@@ -15,7 +15,9 @@ import android.widget.FrameLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ * The Fragment for taking a picture. Note: Uses deprecated classes.
+ */
 public class CameraFragment extends Fragment {
 
     private static final String ARG_ACTIVITY = "activity";
@@ -32,20 +34,26 @@ public class CameraFragment extends Fragment {
     };
 
 
-
+    /**
+     * Gets the Camera Object for the phone.
+     * @return The Camera of the phone, if available
+     */
     public static Camera getCameraInstance(){
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
-            c.setDisplayOrientation(90);
+            c.setDisplayOrientation(90); //Portait Mode
         }
         catch (Exception e){
             Logger.getLogger(AppActivity.class.getName()).log(Level.SEVERE, e.getMessage());
-            //GG
         }
-        return c; // returns null if camera is unavailable
+        return c;
     }
 
+    /**
+     * Factory method; use this instead of constructor to instantiate the Fragment.
+     * @return A new instance of the Fragment
+     */
     public static CameraFragment newInstance(AppActivity activity) {
         CameraFragment fragment = new CameraFragment();
         Bundle args = new Bundle();
@@ -54,6 +62,22 @@ public class CameraFragment extends Fragment {
         fragment.activity = activity;
         return fragment;
     }
+
+    public void setupButtons(){
+        Button captureButton = (Button) activity.findViewById(R.id.capture);
+        captureButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        camera.takePicture(null, null, picture);
+                    }
+                }
+        );
+    }
+
+    /*
+     * BELOW ARE THE AUTO-GENERATED ANDROID FRAGMENT METHODS.
+     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,17 +118,6 @@ public class CameraFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void setupButtons(){
-        Button captureButton = (Button) activity.findViewById(R.id.capture);
-        captureButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        camera.takePicture(null, null, picture);
-                    }
-                }
-        );
-    }
 
 
 }

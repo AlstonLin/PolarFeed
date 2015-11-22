@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+/**
+ * The Adapter for AppActivity to handle all the Fragments.
+ */
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int NUM_TABS = 2;

@@ -2,13 +2,16 @@ package io.alstonlin.wildhacksproject;
 
 import android.content.Context;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
 import java.io.IOException;
 
+/**
+ * A Custom View that displays exactly what the given Camera Object sees; use this in
+ * the CameraFragment.
+ */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder mHolder;
     private Camera mCamera;

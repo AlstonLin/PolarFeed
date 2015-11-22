@@ -2,6 +2,7 @@ package io.alstonlin.wildhacksproject;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,23 +10,45 @@ import android.support.v7.widget.Toolbar;
 
 import java.io.Serializable;
 
+/**
+ * The Activity that contains the entire app after login.
+ */
 public class AppActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, FeedFragment.OnFragmentInteractionListener, Serializable {
+
+    private boolean internet;
+    private int code;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String code = getIntent().getStringExtra(MainActivity.EXTRA_CODE);
-        //TODO: Join a room based on code
+        code = getIntent().getIntExtra(MainActivity.EXTRA_CODE, -1);
+        internet = getIntent().getBooleanExtra(MainActivity.EXTRA_INTERNET, false);
+        setupDAO();
+        setupView();
+        setupTabs();
+        setupViewPager();
+    }
 
+    private void setupDAO(){
+        String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        DAO.instantiate(internet, this, code, deviceId);
+    }
+
+    private void setupView(){
         setContentView(R.layout.activity_app);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+    private void setupTabs(){
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Camera"));
         tabLayout.addTab(tabLayout.newTab().setText("Feed"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+    }
 
+    private void setupViewPager(){
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(adapter);
@@ -44,7 +67,6 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-
     }
 
     @Override

@@ -11,19 +11,47 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:text="Event Code"
+        android:text="PUT APP NAME HERE"
         android:layout_gravity="center_horizontal"
         android:gravity="bottom"
         android:paddingTop="100dp"
-        android:textSize="42sp" />
-    <EditText
+        android:textSize="32sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Event Code"
+            android:textSize="24sp"
+            android:id="@+id/textView"
+            android:layout_weight="1" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:ems="9"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/code"
+            android:lines="1" />
+
+    </LinearLayout>
+
+
+    <Switch
         android:layout_width="wrap_content"
-        android:ems="9"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:id="@+id/code"
-        android:lines="1"
-        android:layout_weight="3" />
+        android:text="Use Internet"
+        android:id="@+id/internet"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1" />
+
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
