@@ -2,7 +2,7 @@
     <string name="app_name">PolarFeed</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_app">PolarFeed</string>
-    <string name="title_activity_add_events">AddEventsActivity</string>
+    <string name="title_activity_add_events">PolarFeed</string>
 
     <string name="hello_world">Hello world!</string>
 </resources>

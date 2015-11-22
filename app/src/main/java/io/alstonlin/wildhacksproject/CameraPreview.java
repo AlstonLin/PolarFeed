@@ -39,9 +39,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Toast.makeText(context, "Error creating Camera Preview", Toast.LENGTH_LONG).show();
         }
     }
+    
 
     public void surfaceDestroyed(SurfaceHolder holder) {
+
         // empty. Take care of releasing the Camera preview in your activity.
+
+        if (mCamera != null) {
+            mCamera.setPreviewCallback(null);
+            mHolder.removeCallback(this);
+            mCamera.release();
+        }
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {

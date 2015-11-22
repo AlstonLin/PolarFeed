@@ -6,15 +6,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
@@ -25,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -152,6 +158,14 @@ public class DAO {
         return postEventInternet(e);
     }
 
+    public void postImage(Bitmap image) throws UnsupportedEncodingException, JSONException {
+        ImageItem item = new ImageItem();
+        item.image = image;
+        item.userid = deviceId;
+        item.eventId = Integer.toString(eventId);
+        sendItemInternet(item);
+    }
+
     /*
        ------------------- INTERNET METHODS -------------------------------------
      */
@@ -159,11 +173,34 @@ public class DAO {
     }
 
     private void sendItemInternet(ImageItem item) throws JSONException, UnsupportedEncodingException {
-        MultipartEntity entity = new MultipartEntity();
+        MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 
         Random rand = new Random();
-        String path = MediaStore.Images.Media.insertImage(activity.getContentResolver(), item.getImage(), "Image" + rand.nextInt(99999), null);
-        File file = new File(path);
+        //String path = MediaStore.Images.Media.insertImage(activity.getContentResolver(), item.getImage(), "Image" + rand.nextInt(999), null);
+        FileOutputStream out = null;
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                "/WildHacks";
+        File dir = new File(file_path);
+
+        if(!dir.exists())
+            dir.mkdirs();
+        try {
+            File file = new File(dir, "sketchpad" + rand.nextInt(999) + ".jpg");
+            FileOutputStream fOut = new FileOutputStream(file);
+
+            item.getImage().compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+            file_path = file.getAbsolutePath();
+            uploadImage u = new uploadImage();
+            u.execute(file_path);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        File file = new File(file_path);
         ContentBody cb = new FileBody(file, "image/jpeg");
 
         entity.addPart("photo", cb);
@@ -171,7 +208,41 @@ public class DAO {
         entity.addPart("userID",  new StringBody(deviceId));
 
         HTTPPost post = new HTTPPost(POST_IMAGE_PATH);
-        post.execute(entity);
+        //post.execute(entity);
+    }
+
+    private class uploadImage extends AsyncTask<String, Void, Void>{
+
+        @Override
+        protected Void doInBackground(String... strings) {
+
+
+            MultipartEntityBuilder multipartEntity = MultipartEntityBuilder
+                    .create();
+            multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+            ContentType contentType = ContentType.create("image/jpeg");
+            multipartEntity.addPart("photo", new FileBody(new File(strings[0]), contentType, "image.jpeg"));
+            HttpPost post = new HttpPost("http://polarfeed.mybluemix.net/fileupload");
+            try {
+                post.addHeader("eventID", String.valueOf(new StringBody(Integer.toString(eventId))));//id is anything as you may need
+                multipartEntity.addPart("eventID", new StringBody(Integer.toString(eventId)));
+                multipartEntity.addPart("userID", new StringBody(deviceId));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            post.setEntity(multipartEntity.build());
+
+            HttpClient client = new DefaultHttpClient();
+
+            try {
+                HttpResponse response = client.execute(post);
+                Log.d("asdfasd", EntityUtils.toString(response.getEntity()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
     }
 
 
@@ -309,7 +380,8 @@ public class DAO {
             HttpPost post = new HttpPost(SITE_URL + path);
             try {
                 post.setEntity(entity[0]);
-                return myClient.execute(post);
+                HttpResponse response = myClient.execute(post);
+                Log.d("asdfasd", EntityUtils.toString(response.getEntity()));
             } catch (Exception e) {
                 e.printStackTrace();
             }

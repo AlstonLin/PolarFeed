@@ -72,7 +72,7 @@ public class FeedFragment extends Fragment {
 
             //check whether the msg empty or not
             HttpClient httpclient = new DefaultHttpClient();
-            HttpGet httppost = new HttpGet("http://polarfeed.mybluemix.net/files/");
+            HttpGet httppost = new HttpGet("http://polarfeed.mybluemix.net/files/"+strings[0]);
 
             try {
                 HttpResponse response = httpclient.execute(httppost);

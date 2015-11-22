@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import org.json.JSONException;
+
+import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,8 +25,7 @@ import java.util.logging.Logger;
 public class CameraFragment extends Fragment {
 
     private static final String ARG_ACTIVITY = "activity";
-
-    private Camera camera;
+    private static Camera camera;
     private CameraPreview preview;
     private AppActivity activity;
     private OnFragmentInteractionListener mListener;
@@ -31,8 +33,16 @@ public class CameraFragment extends Fragment {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             Bitmap image = BitmapFactory.decodeByteArray(data, 0, data.length);
+            try {
+                DAO.getInstance().postImage(image);
+                camera.startPreview();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-    };
+};
 
 
     /**
@@ -40,15 +50,15 @@ public class CameraFragment extends Fragment {
      * @return The Camera of the phone, if available
      */
     public static Camera getCameraInstance(){
-        Camera c = null;
-        try {
-            c = Camera.open(); // attempt to get a Camera instance
-            c.setDisplayOrientation(90); //Portait Mode
+        if (camera == null) {
+            try {
+                camera = Camera.open(); // attempt to get a Camera instance
+                camera.setDisplayOrientation(90); //Portait Mode
+            } catch (Exception e) {
+                Logger.getLogger(AppActivity.class.getName()).log(Level.SEVERE, e.getMessage());
+            }
         }
-        catch (Exception e){
-            Logger.getLogger(AppActivity.class.getName()).log(Level.SEVERE, e.getMessage());
-        }
-        return c;
+        return camera;
     }
 
     /**
@@ -83,7 +93,6 @@ public class CameraFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_camera, container, false);
         FrameLayout previewFrame = (FrameLayout) v.findViewById(R.id.camera_preview);
         previewFrame.addView(preview, 0);
-
         FloatingActionButton captureButton = (FloatingActionButton) v.findViewById(R.id.capture);
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -104,6 +113,13 @@ public class CameraFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        camera = getCameraInstance();
+        preview = new CameraPreview(activity, camera);
     }
 
     @Override

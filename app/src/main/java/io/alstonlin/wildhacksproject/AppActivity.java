@@ -6,6 +6,7 @@ import android.provider.Settings;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 
 import java.io.Serializable;
 
@@ -32,9 +33,17 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
 
     private void setupDAO(){
         String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        DAO.instantiate(internet, this, Integer.parseInt(code), deviceId);
+      //  DAO.instantiate(internet, this, Integer.parseInt(code), deviceId);
     }
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     private void setupTabs(){
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -67,5 +76,10 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
