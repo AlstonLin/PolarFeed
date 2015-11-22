@@ -7,6 +7,7 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A Custom View that displays exactly what the given Camera Object sees; use this in
@@ -69,6 +70,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             // ignore: tried to stop a non-existent preview
         }
 
+
+        Camera.Parameters params = mCamera.getParameters();
+        List<Camera.Size> supportedSizes = params.getSupportedPictureSizes();
+
+        Camera.Size sizePicture = supportedSizes.get(supportedSizes.size()/2);
+        params.setPictureSize(sizePicture.width, sizePicture.height);
+        mCamera.setParameters( params );
         // set preview size and make any resize, rotate or
         // reformatting changes here
 

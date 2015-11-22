@@ -24,7 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -75,10 +74,6 @@ public class AddEventsActivity extends AppCompatActivity {
             try {
                     GetInfo getInfo = new GetInfo();
                     String code = getInfo.execute(information).get();
-                    Intent intent = new Intent(this, AppActivity.class);
-                    intent.putExtra(MainActivity.EXTRA_CODE, code);
-                    intent.putExtra(MainActivity.EXTRA_INTERNET, true);
-                    startActivity(intent);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {

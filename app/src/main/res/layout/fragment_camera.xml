@@ -6,6 +6,24 @@
     android:orientation="vertical"
     tools:context="io.alstonlin.wildhacksproject.CameraFragment">
 
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="12dp"
+        android:id="@+id/loader1"
+        android:background="#d75b61"
+        android:visibility="gone"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView8"
+            android:src="@drawable/groupon"
+            android:layout_gravity="center" />
+    </LinearLayout>
     <FrameLayout android:id="@+id/camera_preview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

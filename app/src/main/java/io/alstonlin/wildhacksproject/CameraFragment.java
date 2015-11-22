@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
 import org.json.JSONException;
@@ -33,6 +35,8 @@ public class CameraFragment extends Fragment {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             Bitmap image = BitmapFactory.decodeByteArray(data, 0, data.length);
+            Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+            getView().findViewById(R.id.capture).setAnimation(shake);
             try {
                 DAO.getInstance().postImage(image);
                 camera.startPreview();

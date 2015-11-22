@@ -220,8 +220,8 @@ public class DAO {
             MultipartEntityBuilder multipartEntity = MultipartEntityBuilder
                     .create();
             multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-            ContentType contentType = ContentType.create("image/jpeg");
-            multipartEntity.addPart("photo", new FileBody(new File(strings[0]), contentType, "image.jpeg"));
+            ContentType contentType = ContentType.create("image/jpg");
+            multipartEntity.addPart("photo", new FileBody(new File(strings[0]), contentType, "image.jpg"));
             HttpPost post = new HttpPost("http://polarfeed.mybluemix.net/fileupload");
             try {
                 post.addHeader("eventID", String.valueOf(new StringBody(Integer.toString(eventId))));//id is anything as you may need

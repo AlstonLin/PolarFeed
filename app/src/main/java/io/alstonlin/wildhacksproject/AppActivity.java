@@ -27,7 +27,7 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        code = getIntent().getStringExtra(MainActivity.EXTRA_CODE);
+        code = (getIntent().getStringExtra(MainActivity.EXTRA_CODE)==null?""+getIntent().getIntExtra(MainActivity.EXTRA_CODE,-1):getIntent().getStringExtra(MainActivity.EXTRA_CODE));
         internet = getIntent().getBooleanExtra(MainActivity.EXTRA_INTERNET, true);
         setupDAO();
         setContentView(R.layout.activity_app);
@@ -37,7 +37,7 @@ public class AppActivity extends AppCompatActivity implements CameraFragment.OnF
 
     private void setupDAO(){
         String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        DAO.instantiate(true, this, Integer.parseInt(code), deviceId);
+        DAO.instantiate(true, this, Integer.parseInt((code.equals("-1")?"":code)), deviceId);
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
