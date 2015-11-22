@@ -9,6 +9,7 @@ public class ImageItem {
     private Bitmap image;
     private int eventId;
     private int deviceId;
+    private int id;
 
     public ImageItem(Bitmap image, int eventId, int deviceId) {
         super();

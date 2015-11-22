@@ -29,7 +29,7 @@ public class CameraFragment extends Fragment {
     private Camera.PictureCallback picture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            //TODO: Send once picture is taken
+
         }
     };
 
@@ -117,7 +117,6 @@ public class CameraFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
-
 
 
 }

@@ -1,5 +1,19 @@
 package io.alstonlin.wildhacksproject;
 
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 
@@ -9,6 +23,8 @@ import java.util.ArrayList;
 public class DAO {
     private static String URL = "ENTER URL HERE";
     private static DAO instance;
+
+    private HttpURLConnection conn;
     private boolean internet;
     private AppActivity activity;
     private ArrayList<ImageItem> items = new ArrayList<>();
@@ -24,9 +40,9 @@ public class DAO {
         instance.eventId = eventId;
         instance.deviceId = deviceId;
         if (internet){
-            //INSTANTIATE INTERNET
+            instance.setupInternet();
         }else{
-            //INSTANTIATE TWILIO
+            instance.setupTwilio();
         }
     }
 
@@ -49,19 +65,46 @@ public class DAO {
      */
     public ArrayList<ImageItem> getImages(){
         if (internet){
-
-        }else{
-
+            return getImagesInternet();
+        } else{
+            return getImagesTwilio();
         }
-        return new ArrayList<>();
     }
 
     public void sendItem (ImageItem item){
         if (internet){
-
+            sendItemInternet(item);
         }else{
-
+            sendItemTwilio(item);
         }
     }
 
+
+    private void setupInternet(){
+        //DAVID DO YOUR STUFF HERE
+    }
+
+    private void sendItemInternet(ImageItem item) {
+        //DAVID DO YOUR STUFF HERE
+    }
+
+
+    public ArrayList<ImageItem> getImagesInternet() {
+        //DAVID DO YOUR STUFF HERE
+        return null;
+    }
+
+
+    private void setupTwilio(){
+
+    }
+
+    public ArrayList<ImageItem> getImagesTwilio() {
+        return null;
+    }
+
+
+    private void sendItemTwilio(ImageItem item) {
+
+    }
 }
